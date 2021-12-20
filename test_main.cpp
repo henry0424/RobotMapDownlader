@@ -4,9 +4,37 @@
 int main(int argc, char **argv) {
 
     auto map_download = std::make_shared<MapDownloader>();
-    auto md5 = map_download->download(
-            "http://ftp.tku.edu.tw/Linux/Ubuntu/ubuntu-releases/bionic/ubuntu-18.04.6-live-server-amd64.iso",
-            "./ubuntu-18.04.6-live-server-amd64.iso");
-    std::cout << "MD5: " << md5 << std::endl;
+    {
+        const std::string url{"http://192.168.10.20:4096/"};
+        const std::string domain{"graph/"};
+        const std::string file{"LE_graph.json"};
+        auto md5 = map_download->download((url + domain + file),
+                                          "./" + file);
+        std::cout << md5 << "\t" << file << std::endl;
+    }
+    {
+        const std::string url{"http://192.168.10.20:4096/"};
+        const std::string domain{"graph/"};
+        const std::string file{"LE_graphConfigure.json"};
+        auto md5 = map_download->download((url + domain + file),
+                                          "./" + file);
+        std::cout << md5 << "\t" << file << std::endl;
+    }
+    {
+        const std::string url{"http://192.168.10.20:4096/"};
+        const std::string domain{"route/"};
+        const std::string file{"routeSPIL2FLE_test.json"};
+        auto md5 = map_download->download((url + domain + file),
+                                          "./" + file);
+        std::cout << md5 << "\t" << file << std::endl;
+    }
+    {
+        const std::string url{"http://192.168.10.20:4096/"};
+        const std::string domain{"route/"};
+        const std::string file{"SPIL_2FLE_0106_1013_2.png"};
+        auto md5 = map_download->download((url + domain + file),
+                                          "./" + file);
+        std::cout << md5 << "\t" << file << std::endl;
+    }
     return EXIT_SUCCESS;
 }

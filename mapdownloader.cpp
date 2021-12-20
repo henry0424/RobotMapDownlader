@@ -21,17 +21,25 @@ std::string MapDownloader::download(const std::string &url, const std::string &p
             ret = boost::to_upper_copy<std::string>(ret);
         else
             ret = boost::to_lower_copy<std::string>(ret);
-        std::cout << "calculate hash : " << ret << std::endl << std::flush;
+//        std::cout << "calculate hash : " << ret << std::endl << std::flush;
         return ret;
     };
 
     if (this->curl) {
         {
             fp = fopen(path.c_str(), "w");
-            curl_easy_setopt(curl, CURLOPT_URL, url.c_str());
-            curl_easy_setopt(curl, CURLOPT_WRITEFUNCTION, NULL);
-            curl_easy_setopt(curl, CURLOPT_WRITEDATA, fp);
+            res = curl_easy_setopt(curl, CURLOPT_URL, url.c_str());
+            if (res != CURLE_OK)
+                throw std::runtime_error("CURLcode [" + std::to_string(res) + "] != CURLE_OK");
+            res = curl_easy_setopt(curl, CURLOPT_WRITEFUNCTION, NULL);
+            if (res != CURLE_OK)
+                throw std::runtime_error("CURLcode [" + std::to_string(res) + "] != CURLE_OK");
+            res = curl_easy_setopt(curl, CURLOPT_WRITEDATA, fp);
+            if (res != CURLE_OK)
+                throw std::runtime_error("CURLcode [" + std::to_string(res) + "] != CURLE_OK");
             res = curl_easy_perform(curl);
+            if (res != CURLE_OK)
+                throw std::runtime_error("CURLcode [" + std::to_string(res) + "] != CURLE_OK");
             fclose(fp);
         }
         {
